@@ -1,0 +1,11 @@
+{% load bootstrap4 %}
+
+{% block content %}
+<h2>Добавление файла</h2>
+<!-- Обязательно multipart/form-data -->
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form form layout='horizontal' %}
+    {% buttons submit='Добавить' %}{% endbuttons %}
+</form>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% load bootstrap4 %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html"
+            charset="UTF-8">
+    <!-- Чтобы bootstrap правильно обработал страницу -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, shrink-to-fit=no">
+    <title>{% block title %}Главная{% endblock %} - Доска объявлений</title>
+    {% bootstrap_css %}
+    <!-- Наши стили static/main/style.css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
+    {% bootstrap_javascript jquery='slim' %}
+</head>
+<!-- container-fluid говррит о том, что верстка будет испольщовать bootstrap -->
+<body class="container-fluid">
+    <h1>Файлы</h1>
+    <div>{{ text }}</div>
+    <div>{{ folders }}</div>
+</body>
+</html>
