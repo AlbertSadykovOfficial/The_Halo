@@ -3,6 +3,7 @@
 import os
 import sys
 
+
 # Создать проект:
 #   django-admin startproject Halo
 #

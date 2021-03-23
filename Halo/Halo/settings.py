@@ -16,6 +16,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Модель пользователя, используемая подсистемой разграничения
+AUTH_USER_MODEL = 'disk.DiskUser'
+
+# Переадресация после входа
+LOGIN_REDIRECT_URL = '/disk/'
 
 # Application definition
 
@@ -91,9 +96,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Каталогстатичских файлов
+STATIC_URL = '/static/'
+
 # Настройка каталога хранения выгруженных файлов
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
 # Максимальный файл Около 2,5 Гб
 FILE_UPLOAD_MAX_MEMORY_SIZE = 2621440000
 

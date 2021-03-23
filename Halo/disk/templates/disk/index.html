@@ -1,23 +1,27 @@
-{% load bootstrap4 %}
+{% extends "layout/basic.html" %}
+
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html"
-            charset="UTF-8">
-    <!-- Чтобы bootstrap правильно обработал страницу -->
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, shrink-to-fit=no">
-    <title>{% block title %}Главная{% endblock %} - Доска объявлений</title>
-    {% bootstrap_css %}
-    <!-- Наши стили static/main/style.css -->
-    <link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
-    {% bootstrap_javascript jquery='slim' %}
-</head>
-<!-- container-fluid говррит о том, что верстка будет испольщовать bootstrap -->
-<body class="container-fluid">
-    <h1>Файлы</h1>
+<!--{% load bootstrap4 %} -->
+
+{% block content %}
+    <h2>Файлы</h2>
     <div>{{ text }}</div>
-    <div>{{ folders }}</div>
-</body>
-</html>
+    <ul class="list-unstyled">
+        {% for folder in folders %}
+            <li style="width:20%; display:inline-block" class="media my-5 p-3 border">
+                <img style="width:100%" class="mr-3" src="{% static 'disk/folder.png' %}">
+                <h2><a href="{{ url }}{{ all }}{{ folder }}/">{{ folder }}</a></h2>
+            </li>
+        {% endfor %}
+        {% for file in files %}
+            <li style="width:20%; display:inline-block" class="media my-5 p-3 border">
+                <img style="width:100%" class="mr-3" src="{% static 'disk/file.png' %}">
+                <h2><a href="{{ url }}{{ all }}{{ file }}/">{{ file }}</a></h2>
+            </li>
+        {% endfor %}
+        <p>
+            <a href='#' onClick="javascript:history.go(-1);">Назад</a>
+            <a href="{% url 'disk:upload' %}{{ all }}">Добавить</a>
+        </p>
+    </ul>
+{% endblock %}

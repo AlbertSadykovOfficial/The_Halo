@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load bootstrap4 %}
+    {% load static %}
+
+    <meta http-equiv="Content-Type" content="text/html"
+            charset="UTF-8">
+    <!-- Чтобы bootstrap правильно обработал страницу -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, shrink-to-fit=no">
+    <title>{% block title %}Главная{% endblock %} - Доска объявлений</title>
+    {% bootstrap_css %}
+    <!-- Наши стили static/disk/style.css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'disk/style.css' %}">
+    {% bootstrap_javascript jquery='slim' %}
+</head>
+<!-- container-fluid говррит о том, что верстка будет испольщовать bootstrap -->
+<body class="container-fluid">
+<!--    <header class="mb-4">
+        <h1 class="display-1 text-center">The Halo</h1>
+    </header> -->
+    <!-- Табличная верстка -->
+    <div class="row">
+        <!-- Горизонтальная навигация -->
+        <ul class="col nav justify-content-end border">
+            <!-- Раскрывающиеся меню (если выполнен вход) -->
+            {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"
+                   data-toggle="dropdown"
+                   href="#"
+                   role="button"
+                   aria-haspopup="true"
+                   aria-expanded="false"
+                >Профиль</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{ % url 'disk:disk' % }">Мои файлы</a>
+                    <a class="dropdown-item" href="{ % url 'disk:profile_change' % }">Изменить личные данные</a>
+                    <a class="dropdown-item" href="{ % url 'disk:password_change' % }">Изменить пароль</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'disk:logout' %}">Выйти</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'disk:profile_delete' %}">Удалить аккаунт</a>
+                </div>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'disk:register' %}">Регистрация</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'disk:login'%}">Вход</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    <!-- Табличная верстка-->
+    <div class="row">
+        <nav class="col-md-auto nav flex-column border">
+            <a class="nav-link root" href="{% url 'disk:index' %}">Главная</a>
+            <!-- Собираем список подрубрик, хранящийся в переменной rubrics контекста шаблона
+                для каждой подрубрики выводим
+            -->
+            {% for rubric in rubrics %}
+            {% ifchanged rubric.super_rubric.pk %}
+            <span class="nav-link root font-weight-bold">
+                {{ rubric.super_rubric.name }}
+            </span>
+            {% endifchanged %}
+            <a class="nav-link" href="{ % url 'disk:by_rubric' pk=rubric.pk % }">
+                {{ rubric.name }}
+            </a>
+            {% endfor %}
+            <!-- Ссылка на приожение disk:other, передаем в приложение параметр page='about' -->
+            <a class="nav-link root" href="{ % url 'disk:other' page='about' % }">О сайте</a>
+        </nav>
+        <!-- py2 нужен, чтобы текст не примыкал к рамкам вплотную -->
+        <section class="col border py-2">
+            {% bootstrap_messages %}
+            {% block content %}
+            {% endblock %}
+        </section>
+    </div>
+    <footer class="mt-3">
+        <p class="text-right font-italic">xxx</p>
+    </footer>
+</body>
+</html>
