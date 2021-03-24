@@ -1,10 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
+
+# Формы
 from .forms import UploadFileForm
+from .forms import CreateObject
 
 # Получить содержимое диска
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import TemplateDoesNotExist
 
 # Загрузка файлов в определенный каталог
@@ -32,6 +34,11 @@ from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Дополниельные приложения
+from .utilities import get_link_create
+from .utilities import get_link_delete
+from .utilities import create_user_file
+from .utilities import delete_user_file
+from .utilities import create_user_folder
 from .utilities import delete_user_folder
 from .utilities import get_user_folder_content
 
@@ -39,42 +46,102 @@ from .utilities import get_user_folder_content
 @login_required
 def index(request):
     template = loader.get_template('disk/index.html')
+    # Получаем каталог пользователя по его ID
     user_id = str(request.user.id)
     objects = get_user_folder_content(user_id)
-    context = {'text': "тут файлики:", "folders": objects[0], "files": objects[1]}
+    # Подгружаем класс формы и создаем контекст для шаблона
+    form = UploadFileForm()
+    create_form = CreateObject()
+    context = {
+               'path': "",
+               'folders': objects[0],
+               'files': objects[1],
+               'form': form,
+               'create_form': create_form,
+               }
     return HttpResponse(template.render(context, request))
+
 
 @login_required
 def other_page(request, folder):
-    print(request.path[6:])
     try:
-        # К полученному имени выводимой страницы (page)
-        # Добавляем расшиерение и префикс каталога
         template = loader.get_template('disk/index.html')
+        # Получаем каталог пользователя по его ID
         user_id = str(request.user.id)
-        objects = get_user_folder_content(user_id +'/'+ folder)
-        context = {'text': "тут файлики:", "folders": objects[0], "files": objects[1]}
+        objects = get_user_folder_content(user_id + '/' + folder)
+        # Подгружаем класс формы и создаем контекст для шаблона
+        form = UploadFileForm()
+        create_form = CreateObject()
+        context = {
+                   'path': folder,
+                   'folders': objects[0],
+                   'files': objects[1],
+                   'form': form,
+                   'create_form': create_form,
+                   }
     except TemplateDoesNotExist:
         raise Http404
     return HttpResponse(template.render(context, request))
 
 
 @login_required
-def upload_file(request):
+def upload_files(request, path):
+    redirect = get_link_create(path)
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             user_id = str(request.user.id)
-            folder = 'media/' + user_id
+            folder = 'media/' + user_id + '/' + path
+
             # Устанавливаем путь для сохранения
             fs = FileSystemStorage(location=folder)
             fs.save(request.FILES['file'].name, request.FILES['file'])
 
-            # form.save()
-            return HttpResponseRedirect('http://localhost:8000/disk/')
+            return HttpResponseRedirect(redirect)
     else:
         form = UploadFileForm()
     return render(request, 'disk/upload.html', {'form': form})
+
+
+@login_required
+def create_file(request, path):
+    redirect = get_link_create(path)
+    if request.method == 'POST':
+        form = CreateObject(request.POST)
+        if form.is_valid():
+            user_id = str(request.user.id)
+            name = request.POST['name']
+            create_user_file(user_id, path, name)
+    return HttpResponseRedirect(redirect)
+
+
+@login_required
+def delete_file(request, path):
+    redirect = get_link_delete(path)
+    user_id = str(request.user.id)
+    delete_user_file(user_id, '/' + path[:-1])
+    return HttpResponseRedirect(redirect)
+
+
+@login_required
+def create_folder(request, path):
+    redirect = get_link_create(path)
+    if request.method == 'POST':
+        form = CreateObject(request.POST)
+        if form.is_valid():
+            user_id = str(request.user.id)
+            name = request.POST['name']
+            create_user_folder(user_id, path, name)
+
+    return HttpResponseRedirect(redirect)
+
+
+@login_required
+def delete_folder(request, path):
+    redirect = get_link_delete(path)
+    user_id = str(request.user.id)
+    delete_user_folder(user_id, '/' + path)
+    return HttpResponseRedirect(redirect)
 
 
 # Контроллер регистрирующий пользователя
@@ -119,7 +186,7 @@ class DeleteUserView(LoginRequiredMixin, DeleteView):
     # Поэтому мы создаем это сообщение самостоятельно
     def post(self, request, *args, **kwargs):
         user_id = str(request.user.id)
-        delete_user_folder(user_id)
+        delete_user_folder(user_id, '')
         logout(request)
         # messages.add_message(request, messages.SUCCESS, 'Пользователь удален')
         return super().post(request, *args, **kwargs)

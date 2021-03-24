@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import FormModel
+from .models import FormModel, CreateModel
 
 # Форма регистрации
 from .models import DiskUser
@@ -15,6 +15,13 @@ class UploadFileForm(forms.ModelForm):
         model = FormModel
         fields = '__all__'
 
+
+class CreateObject(forms.ModelForm):
+    name = forms.CharField(label='Введите название')
+
+    class Meta:
+        model = CreateModel
+        fields = '__all__'
 
 # Регистрацция
 class RegisterUserForm(forms.ModelForm):

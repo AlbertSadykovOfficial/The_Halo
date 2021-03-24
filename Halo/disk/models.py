@@ -20,3 +20,7 @@ class DiskUser(AbstractUser):
 
 class FormModel(models.Model):
     file = models.FileField(upload_to='archive/')
+
+
+class CreateModel(models.Model):
+    name = models.CharField(max_length=40)
