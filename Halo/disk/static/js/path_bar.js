@@ -1,10 +1,3 @@
-function go_back()
-{
-    link = document.location.href.substr(0,  document.location.href.length-1);
-    document.location.href = document.location.href.substr(0, link.lastIndexOf('/') + 1);
-}
-
-
 function add_bar()
 {
     let context = '';

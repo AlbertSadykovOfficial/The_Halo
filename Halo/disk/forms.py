@@ -1,27 +1,10 @@
 from django import forms
 
-from .models import FormModel, CreateModel
-
 # Форма регистрации
 from .models import DiskUser
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 
-
-class UploadFileForm(forms.ModelForm):
-    file = forms.FileField()
-
-    class Meta:
-        model = FormModel
-        fields = '__all__'
-
-
-class CreateObject(forms.ModelForm):
-    name = forms.CharField(label='Введите название')
-
-    class Meta:
-        model = CreateModel
-        fields = '__all__'
 
 # Регистрацция
 class RegisterUserForm(forms.ModelForm):
@@ -67,3 +50,13 @@ class RegisterUserForm(forms.ModelForm):
         model = DiskUser
         fields = ('username', 'email', 'password1', 'password2',
                   'first_name', 'last_name')
+
+
+class ChangeUserInfoForm(forms.ModelForm):
+    # Выполняем полное объявление поля email модели DiskUser
+    # Так как оно обязательно
+    email = forms.EmailField(required=True,
+                             label='Адрес электронной почты')
+    class Meta:
+        model = DiskUser
+        fields = ('username', 'email', 'first_name', 'last_name')

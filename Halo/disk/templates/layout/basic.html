@@ -9,14 +9,14 @@
     <!-- Чтобы bootstrap правильно обработал страницу -->
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, shrink-to-fit=no">
-    <title>{% block title %}Главная{% endblock %} - Доска объявлений</title>
+    <title>{% block title %}Диск{% endblock %}</title>
     {% bootstrap_css %}
     <!-- Наши стили static/disk/style.css -->
     <link rel="stylesheet" type="text/css" href="{% static 'disk/style.css' %}">
     {% bootstrap_javascript jquery='slim' %}
 </head>
 <!-- container-fluid говррит о том, что верстка будет испольщовать bootstrap -->
-<body class="container-fluid">
+<body class="container-fluid" oncontextmenu="return false;">
     <!-- Табличная верстка -->
     <div class="row">
         <!-- Горизонтальная навигация -->
@@ -32,9 +32,9 @@
                    aria-expanded="false"
                 >Профиль</a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{ % url 'disk:disk' % }">Мои файлы</a>
-                    <a class="dropdown-item" href="{ % url 'disk:profile_change' % }">Изменить личные данные</a>
-                    <a class="dropdown-item" href="{ % url 'disk:password_change' % }">Изменить пароль</a>
+                    <a class="dropdown-item" href="{% url 'disk:index' %}">Root</a>
+                    <a class="dropdown-item" href="{% url 'disk:profile_change' %}">Изменить личные данные</a>
+                    <a class="dropdown-item" href="{% url 'disk:password_change' %}">Изменить пароль</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{% url 'disk:logout' %}">Выйти</a>
                     <div class="dropdown-divider"></div>
@@ -55,13 +55,27 @@
     <div class="row">
         <!-- col-md-auto -->
         <nav class="col-md-2 nav flex-column border own-gray">
-            <a class="nav-link root" href="{% url 'disk:index' %}">Главная</a>
-            <button onClick="upload_form();" class="btn btn-warning own-button">Загрузить</button>
+            <!--<button onClick="upload_form();" class="btn btn-warning own-button">Загрузить</button>
+             -->
+             <button onClick="upload_form('{{ path }}');"
+                    class="btn btn-warning own-button"
+                    style="margin-top: 10%"
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                    data-whatever="@mdo">(+) Загрузить</button>
             <div class="own-separator"></div>
-            <button onClick="create_file();" class="btn btn-primary own-button">Создать файл</button>
-            <button onClick="create_folder();" class="btn btn-primary own-button">Создать папку</button>
+            <button onClick="create_file('{{ path }}');"
+                    class="btn btn-primary own-button"
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                    data-whatever="@mdo">Создать файл</button>
+            <button onClick="create_folder('{{ path }}');"
+                    class="btn btn-primary own-button"
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                    data-whatever="@mdo">Создать папку</button>
             <!-- Ссылка на приожение disk:other, передаем в приложение параметр page='about' -->
-            <a class="nav-link root" href="{ % url 'disk:other' page='about' % }">О сайте</a>
+            <a class="nav-link root" href="{ % url 'disk:other' page='about' % }">О приложении</a>
         </nav>
         <!-- py2 нужен, чтобы текст не примыкал к рамкам вплотную -->
         <section class="col border py-2">
@@ -71,10 +85,11 @@
         </section>
     </div>
     <footer class="mt-3">
-        <p class="text-right font-italic">xxx</p>
+        <p class="text-right font-italic">The Halo</p>
     </footer>
 
     <script src="{% static 'js/ajax.js' %}"></script>
+    <script src="{% static 'js/menu.js' %}"></script>
     <script src="{% static 'js/path_bar.js' %}"></script>
     <script src="{% static 'js/create_objects.js' %}"></script>
 </body>

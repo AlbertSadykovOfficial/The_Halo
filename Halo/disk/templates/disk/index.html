@@ -4,50 +4,56 @@
 {% block content %}
     <h2>Файлы</h2>
     <p>
-    <a href='#' onClick="go_back()">Назад</a>
         <nav aria-label="breadcrumb">
             <ol id='path_bar' class="breadcrumb">
             </ol>
         </nav>
     </p>
 
-    <div id="ajax_upload_form" class="own-user_menu hidden">
-        <form method="post" enctype="multipart/form-data" action="http://localhost:8000/disk/a3b2ceb1f2d110bf6c5f9f261a6f448a5be06e2e1a515e3e65bf7943300f89a3/{{ path }}">
-            {% csrf_token %}
-            {% bootstrap_form form layout='horizontal' %}
-            {% buttons submit='Добавить' class='btn btn-success' %}{% endbuttons %}
-        </form>
-    </div>
-    <div id="ajax_create_file_form" class="own-user_menu hidden">
-        <form method="post" enctype="multipart/form-data" action="http://localhost:8000/disk/463d52e2aaa10e704eb0b24dea0eea8e9b86e38d52c28993eeebcf6ec01ec347/{{ path }}">
-            {% csrf_token %}
-            {% bootstrap_form create_form layout='horizontal' %}
-            {% buttons submit='Добавить' class='btn btn-success' %}{% endbuttons %}
-        </form>
-    </div>
-    <div id="ajax_create_folder_form" class="own-user_menu hidden">
-        <form method="post" enctype="multipart/form-data" action="http://localhost:8000/disk/5b53fba3b9601c8aa7ff13ce2d164f427a54f49b8873fa382e310f2162e0db08/{{ path }}">
-            {% csrf_token %}
-            {% bootstrap_form create_form layout='horizontal' %}
-            {% buttons submit='Добавить' class='btn btn-success' %}{% endbuttons %}
-        </form>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="form_id" method="post" enctype="multipart/form-data" action="">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="new-recipient-name" class="col-form-label">Введите имя:</label>
+                    <input type="text" class="form-control" id="old-recipient-name" name="old_name" style="display:none;">
+                    <input type="text" class="form-control" id="new-recipient-name" name="new_name">
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer" id="target-modal">
+
+          </div>
+        </div>
+      </div>
     </div>
 
     <ul class="list-unstyled">
         {% for folder in folders %}
-        <!-- my-5 p-3 border -->
-            <li style="width:15%; display:inline-block; text-align: center; margin-top:2%" class="media">
+            <li style="width:15%; display:inline-block; text-align: center; margin-top:2%"
+                class="media"
+                oncontextmenu="menu('{{ path }}','{{ folder }}', 'folder');"
+            >
                 <img style="width:100%" class="mr-3" src="{% static 'disk/folder.png' %}">
                 <h4><a href="{{ url }}{{ all }}{{ folder }}/">{{ folder }}</a></h4>
-                <!--<a style="color:red" href="http://localhost:8000/disk/e2a7114fca4f6f72dbfedc267c06cd4ff38644dbf11bae90efdf4d19c7ee7474/{{ path }}{{ folder }}/">Удалить</a>
-            --></li>
+            </li>
         {% endfor %}
         {% for file in files %}
-            <li style="width:15%; display:inline-block; text-align: center; margin-top:2%" class="media">
+            <li style="width:15%; display:inline-block; text-align: center; margin-top:2%"
+                class="media"
+                oncontextmenu="menu('{{ path }}','{{ file }}', 'file');"
+            >
                 <img style="width:100%" class="mr-3" src="{% static 'disk/file.png' %}">
                 <h4><a href="{{ url }}{{ all }}{{ file }}/">{{ file }}</a></h4>
-                <!--<a style="color:red" href="http://localhost:8000/disk/87b5c6b2b1e3e19601b421b8b81e199e4d27876d045610b5dcf078017caee694/{{ path }}{{ file }}/">Удалить</a>
-            --></li>
+            </li>
         {% endfor %}
     </ul>
 {% endblock %}
