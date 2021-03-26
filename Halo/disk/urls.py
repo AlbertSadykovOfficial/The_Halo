@@ -1,6 +1,7 @@
 from django.urls import path, re_path
 
 from .views import index
+from .views import about
 from .views import other_page
 from .views import change_name, \
                    upload_files, \
@@ -46,6 +47,7 @@ urlpatterns = [
 
     re_path(r'^download_folder/(?P<path>.*)', download_folder, name='download_folder'),
     re_path(r'^download_file/(?P<path>.*)', download_file, name='download_file'),
+    path('about/', about, name='about'),
     re_path(r'^(?P<folder>.*)', other_page, name='other'),
     path('', index, name='index'),
 ]

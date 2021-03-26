@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music</title>
+</head>
+<body>
+    <p> MUSIC App</p>
+    <div>Address</div>
+    {% for file in files %}
+    <div>{{ file }}</div>
+    <audio controls="">
+        <source src="" type="audio/mpeg">
+    </audio>
+    {% endfor %}
+</body>
+</html>

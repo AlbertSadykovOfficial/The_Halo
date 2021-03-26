@@ -24,7 +24,7 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="new-recipient-name" class="col-form-label">Введите имя:</label>
-                    <input type="text" class="form-control" id="old-recipient-name" name="old_name" style="display:none;">
+                    <input type="text" class="form-control hidden" id="old-recipient-name" name="old_name">
                     <input type="text" class="form-control" id="new-recipient-name" name="new_name">
                 </div>
             </form>
@@ -51,7 +51,7 @@
                 class="media"
                 oncontextmenu="menu('{{ path }}','{{ file }}', 'file');"
             >
-                <img style="width:100%" class="mr-3" src="{% static 'disk/file.png' %}">
+                <img style="width:90%" class="mr-3" src="{% static 'disk/file.png' %}">
                 <h4><a href="{{ url }}{{ all }}{{ file }}/">{{ file }}</a></h4>
             </li>
         {% endfor %}

@@ -1,6 +1,5 @@
 import os
 import shutil
-from django.core.files import File
 
 def get_link_create(path):
     try:
@@ -22,13 +21,13 @@ def get_link_delete(path):
 
 def folder_archive(user_id, path):
     folder = 'media/' + user_id
-    print(folder + '/archive_' + path[:-1], folder + '/' + path[:-1])
-    #shutil.make_archive(folder + '/archive_' + path, 'zip', folder + '/' + path)
-    #f = open(folder + '/archive_' + path + '.zip', 'rb')
-    #myfile = File(f)
-    #f.close()
-    #os.remove(folder + '/archive_' + path + '.zip')
-    #return myfile
+    print(folder + '/archive_' + path[:-1].replace('/', '_'), folder + '/' + path[:-1])
+    shutil.make_archive(folder + '/archive_' + path[:-1].replace('/', '_'), 'zip', folder + '/' + path)
+    f = open(folder + '/archive_' + path[:-1].replace('/', '_') + '.zip', 'rb')
+    myfile = f.readlines()
+    f.close()
+    os.remove(folder + '/archive_' + path[:-1].replace('/', '_') + '.zip')
+    return [myfile, 'archive_' + path[:-1].replace('/', '_') + '.zip']
 
 
 def create_user_file(user_id, path, name):

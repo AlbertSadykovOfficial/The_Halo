@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Регистрируем приложение
     'disk.apps.DiskConfig',
+    'music.apps.MusicConfig',
     'bootstrap4',
 ]
 

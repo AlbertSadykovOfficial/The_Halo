@@ -1,5 +1,3 @@
-from django.core.files import File
-
 from django.shortcuts import render
 from django.template import loader
 
@@ -64,6 +62,9 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
+def about(request):
+    template = loader.get_template('disk/about.html')
+    return HttpResponse(template.render({}, request))
 
 @login_required
 def other_page(request, folder):
@@ -144,20 +145,20 @@ def change_name(request, path):
 
 def download_file(request, path):
     user_id = str(request.user.id)
-    folder = 'media/' + user_id + '/' + path
+    folder = 'media/' + user_id + '/' + path[:-1]
     f = open(folder, 'rb')
-    myfile = File(f)
+    myfile = f.readlines()
+    f.close()
     response = HttpResponse(myfile)
-    response['Content-Disposition'] = 'attachment;'
+    response['Content-Disposition'] = 'attachment; filename={}'.format(path[:-1].replace('/', '_'))
     return response
 
 
-# СДЕЛАТЬ
 def download_folder(request, path):
     user_id = str(request.user.id)
-    myfile = folder_archive(user_id, path)
-    response = HttpResponse(myfile)
-    response['Content-Disposition'] = 'attachment;'
+    myfile, name = folder_archive(user_id, path)
+    response = HttpResponse(myfile, content_type='.zip application/zip, application/octet-stream')
+    response['Content-Disposition'] = 'attachment; filename={}'.format(name)
     return response
 
 
