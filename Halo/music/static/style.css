@@ -1,0 +1,32 @@
+audio {
+    background-color: rgba(255,255,255,0.5);
+    width: 100%;
+}
+
+
+.own-dark {
+    background-color: rgb(12,12,12);
+}
+
+
+.own-canvas {
+    background-color: rgb(51,51,51);
+    border-radius:20px;
+}
+
+
+.own-yellow-font {
+    color: rgb(249,221,179);
+}
+
+
+.own-input {
+    background-color: rgb(5,5,5);
+    border-radius:10px;
+    width: 100%;
+    border-style: none;
+}
+
+.own-dark-header
+{
+}

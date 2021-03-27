@@ -1,17 +1,50 @@
+{% load bootstrap4 %}
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Music</title>
+    <meta http-equiv="Content-Type" content="text/html"
+            charset="UTF-8">
+    <!-- Чтобы bootstrap правильно обработал страницу -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, shrink-to-fit=no">
+    <title>{% block title %}Music{% endblock %}</title>
+    {% bootstrap_css %}
+    <!-- Наши стили static/main/style.css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    {% bootstrap_javascript jquery='slim' %}
 </head>
-<body>
-    <p> MUSIC App</p>
-    <div>Address</div>
-    {% for file in files %}
-    <div>{{ file }}</div>
-    <audio controls="">
-        <source src="" type="audio/mpeg">
-    </audio>
-    {% endfor %}
+<body class="container-fluid own-dark">
+    <header style="background-color:rgb(5,5,5); height: 40px;">
+
+    </header>
+    <div class="mb-4">
+        <h1 class="display-1 text-center">MUSIC</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mx-auto flex-column">
+            <input class="own-input" type="text">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mx-auto flex-column own-canvas"">
+            <div class="row text-center">
+                <div class="col-md-6 mx-auto mt-3 mb-1">
+                    <img src="{% static 'img.jpg' %}" class="col mx-auto">
+                </div>
+                <div class="col-md-6 m-auto own-yellow-font">
+                    <!--<div>The Nights</div>
+                    <div>Avicii</div>-->
+                    <div class="text-break">{{ name }}</div>
+                    <div>3:54</div>
+                    <div>True</div>
+                </div>
+            </div>
+            <div class="col mx-auto">
+                <audio src="{{ song_url }}" controls="">
+                </audio>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
