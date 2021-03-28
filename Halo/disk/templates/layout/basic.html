@@ -41,7 +41,8 @@
                    aria-expanded="false"
                 >Профиль</a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url 'disk:index' %}">Root</a>
+                    <a class="dropdown-item" href="{% url 'disk:index' %}">Главная</a>
+                    <a class="dropdown-item" href="{% url 'music:index' %}">Музыка</a>
                     <a class="dropdown-item" href="{% url 'disk:profile_change' %}">Изменить личные данные</a>
                     <a class="dropdown-item" href="{% url 'disk:password_change' %}">Изменить пароль</a>
                     <div class="dropdown-divider"></div>
@@ -95,7 +96,6 @@
         <p class="text-right font-italic">The Halo</p>
     </footer>
 
-    <script src="{% static 'js/ajax.js' %}"></script>
     <script src="{% static 'js/menu.js' %}"></script>
     <script src="{% static 'js/path_bar.js' %}"></script>
     <script src="{% static 'js/create_objects.js' %}"></script>

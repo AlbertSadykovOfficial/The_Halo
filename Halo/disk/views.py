@@ -62,9 +62,11 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
+
 def about(request):
     template = loader.get_template('disk/about.html')
     return HttpResponse(template.render({}, request))
+
 
 @login_required
 def other_page(request, folder):
@@ -200,13 +202,10 @@ class DeleteUserView(LoginRequiredMixin, DeleteView):
         return super().dispatch(request, *args, **kwargs)
 
     # Выполнить выход перед удалением
-    # После выполнения выхода сообщение пропадает
-    # Поэтому мы создаем это сообщение самостоятельно
     def post(self, request, *args, **kwargs):
         user_id = str(request.user.id)
         delete_user_folder(user_id, '')
         logout(request)
-        # messages.add_message(request, messages.SUCCESS, 'Пользователь удален')
         return super().post(request, *args, **kwargs)
 
     # Извлечение удаляемой записи выполняется в get_object(),
@@ -222,7 +221,6 @@ class DiskPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
 
 
 # LoginRequiredMixin запрещает доступ к контроллеру готсям
-# SuccessMessageMixin - вывод вслывающих сообщений об успешном выполнении операции
 class ChangeUserInfoView(LoginRequiredMixin, UpdateView):
     model = DiskUser
     form_class = ChangeUserInfoForm
@@ -246,20 +244,3 @@ class ChangeUserInfoView(LoginRequiredMixin, UpdateView):
         if not queryset:
             queryset = self.get_queryset()
         return get_object_or_404(queryset, pk=self.user_id)
-
-
-""" 
-
-def upload(request):
-    folder='my_folder/'
-    if request.method == 'POST' and request.FILES['myfile']:
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage(location=folder) #defaults to   MEDIA_ROOT
-        filename = fs.save(myfile.name, myfile)
-        file_url = fs.url(filename)
-        return render(request, 'upload.html', {
-            'file_url': file_url
-        })
-    else:
-         return render(request, 'upload.html')
-"""

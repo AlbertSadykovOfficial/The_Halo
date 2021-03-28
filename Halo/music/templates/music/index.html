@@ -15,29 +15,54 @@
     {% bootstrap_javascript jquery='slim' %}
 </head>
 <body class="container-fluid own-dark">
-    <header style="background-color:rgb(5,5,5); height: 40px;">
 
+    <header class="container-fluid own-dark">
+            <ul class="nav navbar-dark justify-content-end">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"
+                   data-toggle="dropdown"
+                   href="#"
+                   role="button"
+                   aria-haspopup="true"
+                   aria-expanded="false"
+                >Профиль</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'music:index' %}">Обновить</a>
+                    <a class="dropdown-item" href="{% url 'disk:index' %}">Диск</a>
+                    <button type="button" class="dropdown-item" data-toggle="modal" data-target="#exampleModalCenter">
+                        Добавить композицию в библиотеку
+                    </button>
+                    <a class="dropdown-item" href="{% url 'disk:profile_change' %}">Изменить личные данные</a>
+                    <a class="dropdown-item" href="{% url 'disk:password_change' %}">Изменить пароль</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'disk:logout' %}">Выйти</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'disk:profile_delete' %}">Удалить аккаунт</a>
+                </div>
+            </li>
+        </ul>
     </header>
-    <div class="mb-4">
-        <h1 class="display-1 text-center">MUSIC</h1>
+
+    <div class="mb-4 text-center">
+        <h1 class="display-1 ">MUSIC</h1>
     </div>
-    <div class="row">
+    <div class="row hidden">
         <div class="col-md-4 mx-auto flex-column">
             <input class="own-input" type="text">
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4 mx-auto flex-column own-canvas"">
+        <div class="col-md-4 mx-auto flex-column own-canvas own-gradient">
             <div class="row text-center">
                 <div class="col-md-6 mx-auto mt-3 mb-1">
-                    <img src="{% static 'img.jpg' %}" class="col mx-auto">
+                    <img src="../media/music/albums/img.jpg" class="col mx-auto">
                 </div>
                 <div class="col-md-6 m-auto own-yellow-font">
-                    <!--<div>The Nights</div>
-                    <div>Avicii</div>-->
-                    <div class="text-break">{{ name }}</div>
-                    <div>3:54</div>
-                    <div>True</div>
+                    <div>&times;&times;&times;</div>
+                    <div class="text-break">{{ title }}</div>
+                    <div class="text-break">{{ artist }}</div>
+                    <div>{{ time }}</div>
+                    <div>{{ album }}</div>
                 </div>
             </div>
             <div class="col mx-auto">
@@ -46,5 +71,31 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Добавить песню</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <form method="post" enctype="multipart/form-data" action="{% url 'music:media_create'%}">
+                {% csrf_token %}
+                {% bootstrap_form form layout='horizontal' %}
+                {% buttons submit='Добавить' %}{% endbuttons %}
+              </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" integrity="sha256-qM7QTJSlvtPSxVRjVWNM2OfTAz/3k5ovHOKmKXuYMO4=" crossorigin="anonymous"></script>
+
 </body>
 </html>

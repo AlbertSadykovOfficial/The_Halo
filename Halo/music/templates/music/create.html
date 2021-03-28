@@ -1,15 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load bootstrap4 %}
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Add Music</title>
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    {% bootstrap_javascript jquery='slim' %}
 </head>
-<body>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% bootstrap_form form layout='horizontal' %}
-    {% buttons submit='Добавить' %}{% endbuttons %}
-</form>
+<body class="container-fluid own-dark">
+    <div class="row">
+        <button type="button" class="btn btn-primary m-auto text-center" data-toggle="modal" data-target="#exampleModalCenter">
+            Добавить композицию в библиотеку
+        </button>
+    </div>
+    <div class="row">
+        <a class="btn btn-success m-auto text-center" href="{% url 'music:index' %}">
+            Вернуться к прослушиванию
+        </a>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Добавить песню</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form form layout='horizontal' %}
+                {% buttons submit='Добавить' %}{% endbuttons %}
+              </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </body>
 </html>

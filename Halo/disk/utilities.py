@@ -1,6 +1,7 @@
 import os
 import shutil
 
+
 def get_link_create(path):
     try:
         return 'http://localhost:8000/disk/' + path
