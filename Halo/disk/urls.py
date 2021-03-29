@@ -38,6 +38,7 @@ urlpatterns = [
     path('accounts/logout/', DiskLogoutView.as_view(), name='logout'),
 
     # sha_256(function_name) -> token
+    # example: sha_256('about') -> a4262e1c9bcbc1721eb3fe13558154460a2b2a2d307daa32532478526ce6ccb1
     re_path(r'^63b8d67eb1ca393b5e69b31a5d126d553a3fb94afd7a60c90049e66c66c6b891/(?P<path>.*)', change_name, name='change_name'),
     re_path(r'^463d52e2aaa10e704eb0b24dea0eea8e9b86e38d52c28993eeebcf6ec01ec347/(?P<path>.*)', create_file, name='create_file'),
     re_path(r'^87b5c6b2b1e3e19601b421b8b81e199e4d27876d045610b5dcf078017caee694/(?P<path>.*)', delete_file, name='delete_file'),
@@ -45,9 +46,9 @@ urlpatterns = [
     re_path(r'^e2a7114fca4f6f72dbfedc267c06cd4ff38644dbf11bae90efdf4d19c7ee7474/(?P<path>.*)', delete_folder, name='delete_folder'),
     re_path(r'^a3b2ceb1f2d110bf6c5f9f261a6f448a5be06e2e1a515e3e65bf7943300f89a3/(?P<path>.*)', upload_files, name='upload_files'),
 
-    re_path(r'^download_folder/(?P<path>.*)', download_folder, name='download_folder'),
-    re_path(r'^download_file/(?P<path>.*)', download_file, name='download_file'),
-    path('about/', about, name='about'),
+    re_path(r'^b8c75dbaff47e7a2a24fb979a5c9f4bb91a22f8a83456c6006a6d21613c33f64/(?P<path>.*)', download_folder, name='download_folder'),
+    re_path(r'^7898193c2ce6c4b3117e9ed4a3f09e615dd0cd89c3370770983e678b0c00e558/(?P<path>.*)', download_file, name='download_file'),
+    path('a4262e1c9bcbc1721eb3fe13558154460a2b2a2d307daa32532478526ce6ccb1/', about, name='about'),
     re_path(r'^(?P<folder>.*)', other_page, name='other'),
     path('', index, name='index'),
 ]
